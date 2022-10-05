@@ -6,9 +6,8 @@
 #include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string>
 using namespace std;
-
 struct LRBound {
     int left = 0;
     int right = 0;
