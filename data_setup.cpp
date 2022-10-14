@@ -4,8 +4,10 @@
  *  2021-07-27
  */
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <stdint.h>
+#include <dirent.h>
 using namespace std;
 
 // just for easy readability
@@ -17,6 +19,21 @@ struct event {
 };
 
 int main(int argc, char** argv) {
+
+    /** iterate through input file directory**/
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir ("./dat")) != NULL) {
+    /* print all the files and directories within directory */
+    while ((ent = readdir (dir)) != NULL) {
+        printf ("%s\n", ent->d_name);
+    }
+    closedir (dir);
+    } else {
+    /* could not open directory */
+    perror ("");
+    return EXIT_FAILURE;
+    }
 
     /** Constants **/
     char* filename;
@@ -89,10 +106,12 @@ int main(int argc, char** argv) {
         if (evt.t < 50000000) {
             // sometimes we get a crazy high number for the first event. No idea why
             output << evt.x << " " << evt.y << " " << evt.t << " " << evt.pol << endl;
+            // cout << evt.x << " " << evt.y << " " << evt.t << " " << evt.pol << endl;
         }
         num_evts++;
 
     }
     cout << "Wrote " << num_evts << " events" << endl;
+    cout << "ran with " << filename;
     return 0;
 }
