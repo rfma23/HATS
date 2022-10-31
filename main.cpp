@@ -7,6 +7,7 @@
 #include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
+#include "HATS.h"
 
 using namespace std;
 
