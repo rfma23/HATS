@@ -1,34 +1,36 @@
 #include "HATS.h"
 #include <cmath>
 
-vector<Event> filter_memory(vector<vector<Event>> memory, float event_ts, float temp_window){
+vector<Event> filter_memory(vector<Event> memory, float event_ts, float temp_window){
     // finds all events between [event.ts-temp_window, event.ts)
     float limit_ts = event_ts - temp_window;
     
     // Due to the way it is built we only have to find the first extreme
     // Find it using binary search
     bool found = false;
-    bound = LRBound(0, len(memory) - 1);
+    LRBound bound = {0, (int)(memory.size() - 1)};
+    int pos = 0;
     
     // Step through memeory until extreme found
+    // This will be done with a binary search algorithm
     while(bound.left<=bound.right && (found == false)){
-        int pos = 0;
         int midpoint = floor((bound.left + bound.right)/2);
-        // Not certain about using .ts for this with there being two layers of vectors
-        if memory[midpoint].ts == limit_ts{
-            pos = midpoint
-            found = True
+        if(memory[midpoint].ts == limit_ts){
+            pos = midpoint;
+            found = true;
         }else{
-			// Same as above comment
-            if limit_ts < memory[midpoint].ts{
-                bound = LRBound(bound.left, midpoint-1);
+            if(limit_ts < memory[midpoint].ts){
+                LRBound bound = {bound.left, midpoint-1};
             }else{
-                bound = LRBound(midpoint+1, bound.right);
+                LRBound bound = {midpoint+1, bound.right};
 			}
         }
     }           
     //Return all events starting from that index
-    return memory[pos:]
+    // To do this in C++, a new vector will be created and initialized with all values from pos to end of memeory
+    // If returning wrong, specifically missing the first event, change pos to pos - 1
+    vector<Event> returnMem((memory.begin() + pos), memory.end());
+    return returnMem;
 }
 
 vector<vector<int>> get_pixel_cell_partition_matrix(int width, int height, int K){
