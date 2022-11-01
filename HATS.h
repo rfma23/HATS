@@ -1,6 +1,9 @@
 #ifndef NUM_H
 #define NUM_H
 
+#include <vector>
+using namespace std;
+
 struct LRBound {
     int left = 0;
     int right = 0;
@@ -14,8 +17,8 @@ struct Event {
 };
 
 struct TrainingSample {
-    std::vector<float> features;
-    std::vector<int> labels;
+    vector<float> features;
+    vector<int> labels;
 };
 
 /*
@@ -59,6 +62,6 @@ class HATS {
     void reset();
     void process(Event ev);
     void process_all(vector<Event> evs);
-}
+};
 
 #endif
