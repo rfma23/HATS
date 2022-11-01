@@ -16,18 +16,18 @@ vector<vector<float>> compute_local_memory_time_surface(Event ev, vector<Event> 
 	
 }
 
-HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K){
+HATS::HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K){
 	
 }
 
-void reset(){
+void HATS::reset(){
 	
 }
 
-void process(Event ev){
+void HATS::process(Event ev){
 	
 }
 
-void process_all(vector<Event> evs){
+void HATS::process_all(vector<Event> evs){
 	
 }
