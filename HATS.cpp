@@ -1,5 +1,7 @@
 #include "HATS.h"
 #include <cmath>
+#include <cassert>
+#include <vector>
 
 vector<Event> filter_memory(vector<Event> memory, float event_ts, float temp_window){
     // finds all events between [event.ts-temp_window, event.ts)
@@ -34,7 +36,21 @@ vector<Event> filter_memory(vector<Event> memory, float event_ts, float temp_win
 }
 
 vector<vector<int>> get_pixel_cell_partition_matrix(int width, int height, int K){
-	
+    assert ((width % K == 0) && (height % K == 0));
+        int cell_width = floor(width/K);
+        int cell_height = floor(height/K);
+
+        vector<vector<int>> matrix(height, vector<int> (width, 0));
+        
+        for (int i = 0; i < width; i ++) {
+            for (int j = 0; j < height; j ++) {
+                int pixel_row = floor(i / K);
+                int pixel_col = floor(j / K);
+                matrix[i][j] = pixel_row*cell_width + pixel_col;
+            }
+        }
+        
+        return matrix;
 }
 
 vector<vector<float>> normalise(vector<vector<float>> histograms, int event_counter){
