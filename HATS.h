@@ -24,7 +24,7 @@ struct TrainingSample {
 /*
 finds all events between [events.ts-temp_window, event.ts)
 */
-vector<Event> filter_memory(vector<vector<Event>> memory, float event_ts, float temp_window);
+vector<Event> filter_memory(vector<Event> memory, float event_ts, float temp_window);
 
 /*
 function takes as input the width and the height of the image sensor, and the number 
@@ -57,8 +57,21 @@ vector<vector<float>> compute_local_memory_time_surface(Event ev, vector<Event> 
 
 class HATS {
     public:
+    // class attributes
+    double temp_window;
+    double tau;
+    int R;
+    int K;
+    int cell_width;
+    int cell_height;
+    int n_cells;
+    int n_polarities;
+    vector<vector<int>> get_cell;
+
+    // class constructor
     HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K);
 
+    // class functions
     void reset();
     void process(Event ev);
     void process_all(vector<Event> evs);
