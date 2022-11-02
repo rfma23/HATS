@@ -67,7 +67,10 @@ class HATS {
     int n_cells;
     int n_polarities;
     vector<vector<int>> get_cell;
-
+    vector<vector<vector<vector<float>>>> histograms;
+    vector<vector<int>> event_counter;
+    vector<vector<Event>> cell_memory;
+    
     // class constructor
     HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K);
 

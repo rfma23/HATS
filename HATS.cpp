@@ -120,11 +120,15 @@ HATS::HATS(float temp_window=0.1, int width=35, int height=35, float delta_t=0.1
     this->get_cell = get_pixel_cell_partition_matrix(width, height, K);
     
     this->reset();
-    
 }
 
 void HATS::reset(){
-	
+	vector<vector<vector<vector<float>>>> temp(this->n_cells, vector<vector<vector<float>>>(this->n_polarities, vector<vector<float>>(2*this->R+1, vector<float>(2*this->R+1, 0))));
+    this->histograms = temp;
+    vector<vector<int>> temp1(this->n_cells, vector<int>(this->n_polarities, 0));
+    this->event_counter = temp1;
+    vector<vector<Event>> temp2(this->n_cells, vector<Event>(this->n_polarities));
+    this->cell_memory = temp2;
 }
 
 void HATS::process(Event ev){
