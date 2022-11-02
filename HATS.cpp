@@ -106,8 +106,21 @@ vector<vector<float>> compute_local_memory_time_surface(Event event_i, vector<Ev
     return time_surface;
 }
 
-HATS::HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K){
-	
+HATS::HATS(float temp_window=0.1, int width=35, int height=35, float delta_t=0.1, float tau=0.5, int R=7, int K=7){
+	this->temp_window = temp_window;
+    this->tau = tau;
+    this->R = R;
+    this->K = K;
+
+    this->cell_width = floor(width/K);
+    this->cell_height = floor(height/K);
+    this->n_cells = this->cell_width * this->cell_height;
+    this->n_polarities = 2;
+
+    this->get_cell = get_pixel_cell_partition_matrix(width, height, K);
+    
+    this->reset();
+    
 }
 
 void HATS::reset(){
