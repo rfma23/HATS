@@ -57,8 +57,33 @@ vector<vector<float>> normalise(vector<vector<float>> histograms, int event_coun
 	
 }
 
-vector<vector<float>> compute_local_memory_time_surface(Event ev, vector<Event> filtered_memory, int R, float tau){
-	
+vector<vector<float>> compute_local_memory_time_surface(Event event_i, vector<Event> filtered_memory, int R, float tau){
+	//  # initialize blank time surface
+    vector<vector<float>> time_surface(2*R+1, vector<float> (2*R+1, 0));
+
+    // # get the timestamp of the triggering event
+    int t_i = event_i.ts;
+    
+    // # for every event in the local memory relevant to the event
+    // # (relevean both in spatial and temporal terms), do:
+    for (int i = 0; i < filtered_memory.size(); i++) {
+        Event event_j = filtered_memory[i];
+        // # compute the time delta
+        float delta_t = t_i - event_j.ts;
+
+        // # compute contribution to time surface
+        float event_value = exp(-delta_t/tau);
+
+        // # compute coordinates in the shifted representation
+        int shifted_y = event_j.y - (event_i.y - R);
+        int shifted_x = event_j.x - (event_i.x - R);
+
+        // # sum it to the time surface
+        time_surface[shifted_y][shifted_x] += event_value;
+    }
+
+    // # return the computed time surface
+    return time_surface;
 }
 
 HATS::HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K){
