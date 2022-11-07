@@ -127,14 +127,42 @@ void HATS::reset(){
     this->histograms = temp;
     vector<vector<int>> temp1(this->n_cells, vector<int>(this->n_polarities, 0));
     this->event_counter = temp1;
-    vector<vector<Event>> temp2(this->n_cells, vector<Event>(this->n_polarities));
+    vector<vector<vector<Event>>> temp2(this->n_cells, vector<vector<Event>>(this->n_polarities, vector<Event>(1)));
     this->cell_memory = temp2;
 }
 
 void HATS::process(Event ev){
-	
+    // Get the cell corresponding to the event
+    int cell = this->get_cell[ev.y][ev.x];
+    int polarity_index = ev.polarity;
+
+    // If cell_memory is empty, initialize a list with the event, else add it
+    if (this->cell_memory[cell][polarity_index].back().ts == 0 && this->cell_memory[cell][polarity_index].size() == 1) {
+        this->cell_memory[cell][polarity_index][0] = ev;
+    } else {
+        this->cell_memory[cell][polarity_index].push_back(ev);
+    }
+
+    // Filter Local Memory to only events in Temporal Window
+    this-> cell_memory[cell][polarity_index] = filter_memory(this->cell_memory[cell][polarity_index], ev.ts, this->temp_window);
+
+    // Get the Local Memory Time Surface
+    vector<vector<float>> time_surface = compute_local_memory_time_surface(ev, this->cell_memory[cell][polarity_index], this->R, this->tau);
+
+    // Add the time surface to the cell histograms
+    for (int i=0; i<2*this->R+1; i++) {
+        for (int j=0; j<2*this->R+1; j++) {
+            this->histograms[cell][polarity_index][i][j] += time_surface[i][j];
+        }
+    }
+
+    // Increase the event counter for the cell
+    this->event_counter[cell][polarity_index] += 1;
 }
 
 void HATS::process_all(vector<Event> evs){
-	
+	for (int i=0; i<evs.size(); i++) {
+        this->process(evs[i]);
+    }
+    this->histograms = normalise(this->histograms, this->event_counter);
 }

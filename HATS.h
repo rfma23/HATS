@@ -13,7 +13,7 @@ struct Event {
     unsigned int x = 0;
     unsigned int y = 0;
     unsigned int ts = 0;
-    bool polarity;
+    int polarity = 0;
 };
 
 struct TrainingSample {
@@ -69,7 +69,7 @@ class HATS {
     vector<vector<int>> get_cell;
     vector<vector<vector<vector<float>>>> histograms;
     vector<vector<int>> event_counter;
-    vector<vector<Event>> cell_memory;
+    vector<vector<vector<Event>>> cell_memory;
     
     // class constructor
     HATS(float temp_window, int width, int height, float delta_t, float tau, int R, int K);
