@@ -58,5 +58,6 @@ if __name__ == '__main__':
     x = np.arange(np.shape(time_series)[0])
     y = time_series[:, 2]
     plt.plot(x, y)
+    plt.show()
     
     
