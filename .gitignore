@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#personal files
+Test.zip
+Train.zip
+datasets/Test_binary/
+datasets/Train_binary/
+datasets/Test/
+datasets/Train/
+datasets/a.out
+HATStest
